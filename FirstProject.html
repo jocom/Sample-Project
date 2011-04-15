@@ -1,0 +1,60 @@
+<html xmlns="http://www.w3.org/1999/xhtml"> 
+  <head> 
+  
+    <title>TileMill Demo</title> 
+    
+    <script src="http://www.openlayers.org/api/OpenLayers.js"></script> 
+    <script type="text/javascript"> 
+ 
+      var map;
+      OpenLayers.IMAGE_RELOAD_ATTEMPTS = 3;
+
+      function init(){
+        var options = {
+          projection: new OpenLayers.Projection("EPSG:900913"),
+          displayProjection: new OpenLayers.Projection("EPSG:4326"),
+          units: "m",
+          maxResolution:1222.99245234,
+          maxExtent: new OpenLayers.Bounds(
+            -20037508, -20037508, 20037508, 20037508.34)
+        };
+        map = new OpenLayers.Map('map', options);
+
+        // create base layer
+          var haiti_roadtrip = new OpenLayers.Layer.TMS(
+            "Haiti RoadTrip",
+            [ "http://localhost:8888/" ],
+            { 'layername': 'road_trip', 'type':'jpg',
+              'buffer': 0, 'transitionEffect': 'resize',
+            "serverResolutions": [
+                156543.0339,78271.51695,39135.758475,19567.8792375,9783.93961875,4891.96980938,2445.98490469,1222.99245234,611.496226172,305.748113086,152.874056543,76.4370282715,38.2185141357,19.1092570679,9.55462853394,4.77731426697,2.38865713348,1.19432856674,0.597164283371],
+            "resolutions": [ 
+                1222.99245234,611.496226172,305.748113086,152.874056543,76.4370282715,38.2185141357,19.1092570679,9.55462853394,4.77731426697,2.38865713348]
+                                                        }
+        );
+        var myOverlay1 = new OpenLayers.Layer.TMS(
+          "my Overlay World",
+           "http://localhost:8888/" ,
+            { 'layername': 'FirstProject', 'type':'png'}
+        );
+        myOverlay1.setVisibility(false);
+        myOverlay1.setIsBaseLayer(false); 
+
+        map.addLayers([haiti_roadtrip,myOverlay1]); 
+        
+        map.addControl(new OpenLayers.Control.LayerSwitcher());
+        
+        map.zoomToExtent(new OpenLayers.Bounds.fromString(
+          "-8310838.85,1977410.68,-7592073.63,2298890.2"));
+      }
+ 
+    </script> 
+  </head> 
+  <body onload="init()"> 
+    <div id="header"></div>
+    <h2>TileMill Project</h2>
+    <div id="map" class="smallmap"></div> 
+  </body> 
+</html> 
+
+
